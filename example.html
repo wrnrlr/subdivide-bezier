@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <canvas id="canvas" width="300" height="300"></canvas>
+  <script type="module">
+    import {createBezierSubdivider} from './bundle.js'
+    const canvas = document.getElementById('canvas'),
+          ctx = canvas.getContext('2d'),
+          curve = [[100, 200], [200, 50], [50, 100], [200, 200]],
+          subdivide = createBezierSubdivider(),
+          points = subdivide(curve[0], curve[1], curve[2], curve[3]);
+    ctx.beginPath()
+    ctx.lineWidth = 4
+    ctx.strokeStyle = "red";
+    points.forEach((point, i) => {
+      if (i === 0) ctx.moveTo(point[0], point[1]);
+      else ctx.lineTo(point[0], point[1]);
+    });
+    ctx.stroke();
+
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = "grey";
+    for (var line of [[curve[0], curve[1]], [curve[2], curve[3]]]) {
+      ctx.beginPath();
+      ctx.moveTo(line[0][0], line[0][1]);
+      ctx.lineTo(line[1][0], line[1][1]);
+      ctx.stroke();
+    }
+
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = "black";
+    ctx.fillStyle = "white";
+
+    for (var point of curve) {
+      ctx.beginPath();
+      ctx.ellipse(point[0], point[1], 5, 5, 0, 0, 2 * Math.PI);
+      ctx.fill();
+      ctx.stroke();
+    }
+  </script>
+</body>
+</html>
